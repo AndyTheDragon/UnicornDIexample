@@ -89,13 +89,54 @@ void setUp() {
 
 By injecting a pre-populated `MemoryDAO` into the `ICrudDAO` interface, we can test the DAO functionality in isolation with controlled data.
 
+### Example 3: ConnectionPool Singleton
+
+The `ConnectionPool` class demonstrates a different pattern related to dependency management:
+
+```java
+public class ConnectionPool {
+    private static volatile ConnectionPool instance = null;
+    private static HikariDataSource ds = null;
+
+    // Private constructor to enforce Singleton pattern
+    private ConnectionPool() {
+        // Prevent instantiation
+    }
+
+    // Singleton instance getter with double-checked locking
+    public static ConnectionPool getInstance() {
+        if (instance == null) {
+            synchronized (ConnectionPool.class) {
+                if (instance == null) {
+                    // Initialize the connection pool
+                    instance = new ConnectionPool();
+                }
+            }
+        }
+        return instance;
+    }
+
+    // Get a connection from the pool
+    public Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
+}
+```
+
+While this is a Singleton pattern rather than dependency injection, it's related to DI in that:
+- It provides a global access point for database connections
+- It can be used by DAO classes that need database access
+- In a more DI-oriented approach, this ConnectionPool might be injected into DAO classes rather than accessed statically
+
+The Singleton pattern can sometimes be an alternative to DI, but it has drawbacks like tighter coupling and harder testability. The bonus question in the DIExercise.md file asks whether you should inject the ConnectionPool into DAO classes, which highlights this design consideration.
+
 ## Types of Dependency Injection
 
 1. **Constructor Injection**: Dependencies are provided through a class constructor.
    ```java
    public class Service {
        private final Repository repository;
-       
+
        public Service(Repository repository) {
            this.repository = repository;
        }
@@ -106,7 +147,7 @@ By injecting a pre-populated `MemoryDAO` into the `ICrudDAO` interface, we can t
    ```java
    public class Service {
        private Repository repository;
-       
+
        public void setRepository(Repository repository) {
            this.repository = repository;
        }
@@ -118,10 +159,10 @@ By injecting a pre-populated `MemoryDAO` into the `ICrudDAO` interface, we can t
    public interface RepositoryInjector {
        void injectRepository(Repository repository);
    }
-   
+
    public class Service implements RepositoryInjector {
        private Repository repository;
-       
+
        @Override
        public void injectRepository(Repository repository) {
            this.repository = repository;

@@ -1,0 +1,65 @@
+@startuml
+
+' Class diagram for Unicorn entity and ICrudDAO interface
+
+' Package definitions
+package "dat.exceptions" {
+  class DaoException {
+    + DaoException(String message)
+    + DaoException(String message, Throwable cause)
+  }
+}
+
+package "dat.entities" {
+class Unicorn {
+  - Integer id
+  - String name
+  - Integer age
+  - String color
+  - Double powerStrength
+  + Unicorn()
+  + Unicorn(String name, int age, String color, double powerStrength)
+  + Integer getId()
+  + void setId(Integer id)
+  + String getName()
+  + void setName(String name)
+  + Integer getAge()
+  + String getColor()
+  + Double getPowerStrength()
+}
+
+package "dat.dao" {
+' ICrudDAO interface
+interface ICrudDAO<T> {
+  + T create(T entity) throws DaoException
+  + T getById(int id) throws DaoException
+  + List<T> getAll() throws DaoException
+  + T update(T entity) throws DaoException
+  + void delete(T entity) throws DaoException
+}
+
+' MemoryDAO implementation
+class MemoryDAO<T extends Unicorn> {
+  - Map<Integer, T> memoryDB
+  + MemoryDAO()
+  + MemoryDAO(Map<Integer, T> memoryDB)
+  + T create(T entity) throws DaoException
+  + T getById(int id) throws DaoException
+  + List<T> getAll() throws DaoException
+  + T update(T entity) throws DaoException
+  + void delete(T entity) throws DaoException
+}
+}
+
+' Relationships
+MemoryDAO ..|> ICrudDAO : implements
+ICrudDAO ..> Unicorn : uses >
+MemoryDAO --> Unicorn : manages >
+ICrudDAO ..> DaoException : throws >
+MemoryDAO ..> DaoException : throws >
+
+' Add notes for annotations
+note top of Unicorn: @Entity\n@Getter
+note right of Unicorn: @Id\n@GeneratedValue\n@Setter
+
+@enduml

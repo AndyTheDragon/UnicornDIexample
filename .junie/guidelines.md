@@ -40,6 +40,7 @@ The project implements the DAO pattern with:
 2. Create a `config.properties` file in the resources directory with the following properties:
    ```
    DB_NAME=your_db_name
+   DB_URL=jdbc:postgresql://localhost:5432/%s?currentSchema=public
    DB_USERNAME=postgres
    DB_PASSWORD=your_password
    ```
@@ -62,26 +63,4 @@ Key test classes:
 - **Populator**: Utility for populating test data
 - **PropertyReader**: Utility for reading configuration properties
 - **HibernateConfig**: Configuration for Hibernate ORM
-
-## Example Usage
-```java
-// Create a DAO
-ICrudDAO<Unicorn> dao = new MemoryDAO<>();
-
-// Create a unicorn
-Unicorn unicorn = new Unicorn("Rainbow", 5, "White", 10.0);
-dao.create(unicorn);
-
-// Get all unicorns
-List<Unicorn> unicorns = dao.getAll();
-
-// Get unicorn by ID
-Unicorn found = dao.getById(unicorn.getId());
-
-// Update unicorn
-unicorn.setName("Updated Name");
-dao.update(unicorn);
-
-// Delete unicorn
-dao.delete(unicorn);
-```
+- **ConnectionPool**: Singleton for managing database connections

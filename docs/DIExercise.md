@@ -3,6 +3,7 @@ We will be working with the [Unicorn entity](../src/main/java/dat/entities/Unico
 Before you start, you should create a `config.properties` file in the `src/main/resources` folder. This file should contain the following properties:
 ```properties
 DB_NAME=your_db_name
+DB_URL=jdbc:postgresql://localhost:5432/%s?currentSchema=public
 DB_USERNAME=postgres
 DB_PASSWORD=your_password
 ```

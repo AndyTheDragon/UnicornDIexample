@@ -42,7 +42,7 @@ public class CrudDAOTest
     {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
         List<Unicorn> dbList = populator.populateEntityManager(emf);
-        dao = new DatabaseDAO();
+        //dao = new EntityManagerDAO();
         u1 = dbList.get(0);
         u2 = dbList.get(1);
     }
@@ -50,8 +50,8 @@ public class CrudDAOTest
     @BeforeEach
     void setUp()
     {
-        setupMemoryDB();
-        //setupDatabase();
+        //setupMemoryDB();
+        setupDatabase();
         //setupEntityManager();
     }
 

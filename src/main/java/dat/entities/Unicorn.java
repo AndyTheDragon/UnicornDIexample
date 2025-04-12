@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 public class Unicorn
@@ -19,6 +21,7 @@ public class Unicorn
     private String name;
     private Integer age;
     private String color;
+    @Setter
     private Double powerStrength;
 
     public Unicorn() {    }
@@ -34,5 +37,18 @@ public class Unicorn
     public String toString()
     {
         return String.format("[ID %d]: %s the %s Unicorn is %d years old and has powerlevel %.2f", id, name, color, age, powerStrength);
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Unicorn unicorn)) return false;
+        return Objects.equals(id, unicorn.id) && Objects.equals(name, unicorn.name) && Objects.equals(age, unicorn.age) && Objects.equals(color, unicorn.color) && Objects.equals(powerStrength, unicorn.powerStrength);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(id, name, age, color, powerStrength);
     }
 }

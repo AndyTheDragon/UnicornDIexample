@@ -1,6 +1,7 @@
 package dat;
 
 import dat.config.HibernateConfig;
+import dat.dao.DatabaseDAO;
 import dat.dao.ICrudDAO;
 import dat.dao.MemoryDAO;
 import dat.entities.Unicorn;
@@ -15,7 +16,7 @@ public class Main
     public static void main(String[] args)
     {
         // Initialize the DAO
-        dao = new MemoryDAO<>();
+        dao = new DatabaseDAO();
 
         // Create a new Unicorn
         Unicorn unicorn = new Unicorn("Sprinkles", 5, "Pink", 10.0);
@@ -24,6 +25,7 @@ public class Main
         try
         {
             Unicorn createdUnicorn = dao.create(unicorn);
+            unicorn = createdUnicorn;
             System.out.println("Created Unicorn: " + createdUnicorn);
         }
         catch (Exception e)
@@ -34,7 +36,7 @@ public class Main
         // Retrieve the Unicorn by ID
         try
         {
-            Unicorn retrievedUnicorn = dao.getById(1);
+            Unicorn retrievedUnicorn = dao.getById(unicorn.getId());
             System.out.println("Retrieved Unicorn: " + retrievedUnicorn);
         }
         catch (Exception e)
@@ -46,7 +48,7 @@ public class Main
         try
         {
             Unicorn unicornToUpdate = new Unicorn("Sparkles", 6, "Blue", 12.0);
-            unicornToUpdate.setId(1); // Set the ID of the Unicorn to update
+            unicornToUpdate.setId(unicorn.getId()); // Set the ID of the Unicorn to update
             Unicorn updatedUnicorn = dao.update(unicornToUpdate);
             System.out.println("Updated Unicorn: " + updatedUnicorn);
         }
@@ -58,7 +60,7 @@ public class Main
         // Delete the Unicorn
         try
         {
-            dao.delete(dao.getById(1));
+            dao.delete(dao.getById(unicorn.getId()));
             System.out.println("Unicorn deleted successfully.");
         }
         catch (Exception e)

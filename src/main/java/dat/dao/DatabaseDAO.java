@@ -3,16 +3,13 @@ package dat.dao;
 import dat.config.ConnectionPool;
 import dat.entities.Unicorn;
 import dat.exceptions.DaoException;
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DatabaseDAO implements ICrudDAO<Unicorn>
 {

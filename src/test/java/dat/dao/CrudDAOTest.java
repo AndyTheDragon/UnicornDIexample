@@ -30,7 +30,7 @@ public class CrudDAOTest
         u2 = memoryDB.get(2);
     }
 
-    void setupDatabase()
+    /*void setupDatabase()
     {
         List<Unicorn> dbList = populator.populateDB();
         dao = new DatabaseDAO();
@@ -45,7 +45,7 @@ public class CrudDAOTest
         dao = new DatabaseDAO();
         u1 = dbList.get(0);
         u2 = dbList.get(1);
-    }
+    }*/
 
     @BeforeEach
     void setUp()

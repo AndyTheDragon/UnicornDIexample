@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class Populator
 {
-    private Logger logger = LoggerFactory.getLogger(Populator.class);
+    private final Logger logger = LoggerFactory.getLogger(Populator.class);
 
     private Unicorn u1, u2;
 

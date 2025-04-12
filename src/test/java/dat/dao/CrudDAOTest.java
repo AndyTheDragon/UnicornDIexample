@@ -1,9 +1,10 @@
 package dat.dao;
 
+import dat.config.HibernateConfig;
 import dat.entities.Unicorn;
 import dat.exceptions.DaoException;
 import dat.utils.Populator;
-import org.junit.jupiter.api.BeforeAll;
+import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,27 +18,41 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class CrudDAOTest
 {
-    private static ICrudDAO<Unicorn> dao;
-    private static final Populator populator = new Populator();
-    private static Unicorn u1, u2;
+    private ICrudDAO<Unicorn> dao;
+    private final Populator populator = new Populator();
+    private Unicorn u1, u2;
 
-    @BeforeEach
-    void setUp()
+    void setupMemoryDB()
     {
-        /*
-        // Uncomment this block if you want to use the memoryDAO
         Map<Integer, Unicorn> memoryDB = populator.populateMemoryDB();
         dao = new MemoryDAO<>(memoryDB);
         u1 = memoryDB.get(1);
         u2 = memoryDB.get(2);
-         */
+    }
 
-        // Use this block if you want to use the databaseDAO
+    void setupDatabase()
+    {
         List<Unicorn> dbList = populator.populateDB();
         dao = new DatabaseDAO();
         u1 = dbList.get(0);
         u2 = dbList.get(1);
+    }
 
+    void setupEntityManager()
+    {
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
+        List<Unicorn> dbList = populator.populateEntityManager(emf);
+        dao = new DatabaseDAO();
+        u1 = dbList.get(0);
+        u2 = dbList.get(1);
+    }
+
+    @BeforeEach
+    void setUp()
+    {
+        setupMemoryDB();
+        //setupDatabase();
+        //setupEntityManager();
     }
 
     @Test
